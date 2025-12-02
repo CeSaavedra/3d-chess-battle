@@ -1,77 +1,97 @@
-const fs = require('fs');
-const path = require('path');
+const socket = (typeof io === 'function') ? io() : null;
 
-const outDir = path.join(__dirname, 'public');
-const outFile = path.join(outDir, 'index.html');
+const createBtn = document.getElementById('createBtn');
+const joinBtn = document.getElementById('joinBtn');
+const codeDisplay = document.getElementById('codeDisplay');
+const codeInput = document.getElementById('codeInput');
+const statusEl = document.getElementById('status');
 
-const html = `<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8"/>
-  <title>Invite Code Minimal</title>
-</head>
-<body>
-  <div>
-    <button id="createBtn">Create Invite Code</button>
-    <span id="codeDisplay" style="margin-left:12px"></span>
-  </div>
+function setStatus(text) {
+  if (statusEl) statusEl.textContent = text;
+}
 
-  <div style="margin-top:12px">
-    <input id="codeInput" placeholder="ENTER CODE" />
-    <button id="joinBtn">Join</button>
-  </div>
+function gotoGame(code) {
+  // navigate to the game page using an absolute path
+  location.href = '/pages/game-page.html?code=' + encodeURIComponent(code);
+}
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
+if (!socket) {
+  setStatus('Socket.io client not available. Check server and /socket.io/socket.io.js');
+  console.error('Socket.io client not found on window as io()');
+} else {
+  setStatus('Connecting to server...');
+  socket.on('connect', () => setStatus('Connected as ' + socket.id));
+  socket.on('disconnect', () => setStatus('Disconnected'));
 
-    const createBtn = document.getElementById('createBtn');
-    const joinBtn = document.getElementById('joinBtn');
-    const codeDisplay = document.getElementById('codeDisplay');
-    const codeInput = document.getElementById('codeInput');
+  // keep track of the room code we created (if any) and whether we've already navigated
+  let currentRoomCode = null;
+  let hasNavigated = false;
 
-    function gotoGame(code){
-        const url = new URL('../pages/game-page.html', location.origin);
-        url.searchParams.set('code', code);
-        location.href = url.toString();
-    }
-
-    // Creator: create room and wait for peer to join, then navigate both
+  // Creator: create room and wait for server 'start-game' on the game page,
+  // but also navigate the creator immediately when a peer joins (restore original UX).
+  if (createBtn) {
     createBtn.addEventListener('click', () => {
       socket.emit('create', null, res => {
-        if (!res || !res.code) return alert('Create failed');
+        if (!res || !res.code) {
+          alert('Create failed');
+          return;
+        }
         const code = res.code;
-        codeDisplay.textContent = code;
+        currentRoomCode = code; // remember it for peer-joined handler
+        if (codeDisplay) codeDisplay.textContent = code;
+        setStatus('Room created — waiting for opponent to load...');
         alert('Created room: ' + code);
-        socket.once('peer-joined', () => gotoGame(code));
+
+        // Keep a listener for start-game in case you want to rely on server handshake
+        // on the game page itself; this does not prevent immediate navigation on peer-joined.
+        socket.once('start-game', () => {
+          if (!hasNavigated) {
+            hasNavigated = true;
+            gotoGame(code);
+          }
+        });
       });
     });
+  }
 
-    // Joiner: join and navigate immediately on success
+  // Joiner: join and navigate immediately on success
+  if (joinBtn && codeInput) {
     joinBtn.addEventListener('click', () => {
       const code = (codeInput.value || '').trim();
       if (!code) return alert('Enter code');
       socket.emit('join', code, res => {
         if (res && res.ok) {
           alert('Joined: ' + code);
+          hasNavigated = true;
           gotoGame(code);
         } else {
           alert('Join failed: ' + (res && res.error ? res.error : 'unknown'));
         }
       });
     });
+  }
 
-    // If someone else joins your created room while you're connected, server should emit 'peer-joined'
-    socket.on('peer-joined', d => {
-      // If creator receives this, they will already navigate via the once() above.
-      // Keep this as a fallback to notify if needed.
-      alert('Peer joined your room: ' + (d && d.id ? d.id : JSON.stringify(d)));
-    });
-  </script>
-</body>
-</html>
-`;
+  // Global peer-joined handler: if we're the creator (we have a currentRoomCode),
+  // show an alert to inform the inviter, then navigate to the game page.
+  socket.on('peer-joined', d => {
+    console.log('peer-joined', d);
+    setStatus('Peer joined your room');
 
-if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-fs.writeFileSync(outFile, html, 'utf8');
-console.log('Wrote', outFile);
+    // show the alert first so the inviter sees the notification
+    alert('A peer has joined your room.');
+
+    // If we created a room and still have its code, navigate the creator to the game page
+    if (currentRoomCode && !hasNavigated) {
+      // small delay to allow any UI updates; remove if undesired
+      setTimeout(() => {
+        if (!hasNavigated) {
+          hasNavigated = true;
+          gotoGame(currentRoomCode);
+        }
+      }, 50);
+    }
+  });
+
+  // Optional: show server-sent status messages
+  socket.on('status', msg => setStatus(String(msg)));
+}
