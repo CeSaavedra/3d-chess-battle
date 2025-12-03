@@ -1,5 +1,16 @@
-// placeholder
-const API_BASE = "http://localhost:3000"; 
+const INSTANCE_IP = '3.237.184.159';
+const BASE = `http://${INSTANCE_IP}:3000`;
+
+const USER_BY_NAME_URL = (username) =>
+    `${BASE}/users/${encodeURIComponent(username)}`;
+
+const USER_BY_ID_URL = (userId) =>
+    `${BASE}/users/id/${encodeURIComponent(userId)}`;
+
+const RENAME_BY_ID_URL = (userId) =>
+    `${BASE}/users/id/${encodeURIComponent(userId)}/rename`;
+
+
 
 const form = document.getElementById("login-form");
 const errorBox = document.getElementById("login-error");
@@ -37,7 +48,8 @@ form.addEventListener("submit", async (event) => {
 
     try {
 
-        const res = await fetch(`${API_BASE}/users/${encodeURIComponent(username)}`);
+        const res = await fetch(USER_BY_NAME_URL(username));
+
 
         if (!res.ok) {
             if (res.status === 404) {
