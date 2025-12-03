@@ -4,14 +4,15 @@
         <meta charset="utf-8">
         <title>Login Page</title>
         <link rel="stylesheet" href="../css/login.css">
-        <!-- <script type="module" src="../js/login.js"></script> -->
+
+        <script type="module" src="../js/login.js" defer></script>
     </head>
     <body>
         <div id="content-container">
             <div id="navbar-container">
                 <h2>Page Title</h2>
-
             </div>
+
             <div id="main-container">
                 <div id="prompt-container">
                     <h3>Login</h3>
@@ -23,18 +24,21 @@
                         <label for="password">Password:</label><br>
                         <input type="password" id="password" name="password" required><br><br>
 
+                        
                         <button type="submit">Login</button>
 
-                    <div id="register-link">
-                        <span>No account?</span>
-                        <button type="button" onclick="window.location.href='register.html'">Register</button>
-                    </div>
+                        <div id="register-link">
+                            <span>No account?</span>
+                            <button type="button" onclick="window.location.href='register.html'">
+                                Register
+                            </button>
+                        </div>
 
+                        
+                        <p id="login-error" class="error-message"></p>
                     </form>
                 </div>
             </div>
         </div>
-
-
     </body>
 </html>
