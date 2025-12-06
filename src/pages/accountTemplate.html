@@ -1,34 +1,273 @@
 <!--Luke Pressimone-->
+<!--67-->
 <!--Account Template for 3D Chess Profile-->
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>
-            Account Template
-        </title>
-        <link rel="stylesheet" href="../css/accountTemplateStyle.css">
-        <meta charset="utf-8">
-        
-    </head>
-    <body>
-        <div id="content-container">
-            <div id="navbar-container">
-                <h1>♟</h1>
-            </div>
-            <div id="main-container">
-                <h1><span id="username">testUser</span></h1>
-                <img src="../assets/profile-pictures/profilePic.png" alt="Profile Picture" width="200" height="200">
-                <h3><i>Account Details:</i></h3>
-                <div id="prompt-container">
-                    <ul>
-                        <li>Username: <span id="username">testUser</span></li>
-                        <li>Email: <span id="email">testEmail</span></li>
-                        <li>Wins: <span id="wins">testWins</span></li>
-                        <li>Losses: <span id="loses">testLosses</span></li>
-                        <li>Win Rate: <span id="winRate">testWR</span></li>
-                    </ul>
-                </div>
-            </div>
+  <head>
+    <title>3D Chess Profile</title>
+    <link rel="stylesheet" href="../css/accountTemplateStyle.css">
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="content-container">
+      <div id="navbar-container">
+        <h1>♟</h1>
+      </div>
+      <div id="main-container">
+        <h1><span id="username-display">testUser</span></h1>
+        <img id="profile-image" src="../assets/profile-pictures/profilePic.png" 
+           alt="Profile Picture" width="200" height="200">
+        <h3><i>Account Details:</i></h3>
+        <div id="prompt-container">
+          <ul>
+            <li>Username: <span id="username-detail">testUser</span></li>
+            <li>Wins: <span id="wins">testWins</span></li>
+            <li>Losses: <span id="loses">testLosses</span></li>
+            <li>Win Rate: <span id="winRate">testWR</span></li>
+            <li>
+              <button id="change-username-btn" type="button">
+                Change Username
+              </button>
+              <button id="change-pfp-btn">
+                Change Profile Picture</button>
+              </li>
+          </ul>
+          <!--Multiplayer stuff goes here-->
         </div>
-    </body>
+      </div>
+    </div>
+
+    <script>
+      const INSTANCE_IP = '107.23.150.169';
+      const BASE = `http://${INSTANCE_IP}:3000`;
+      const DB_HEALTH_URL = `${BASE}/db-health`;
+      const USER_BY_NAME_URL = username => `${BASE}/users/${encodeURIComponent(username)}`;
+      const USER_BY_ID_URL = userId => `${BASE}/users/id/${encodeURIComponent(userId)}`;
+      const RENAME_BY_ID_URL = userId => `${BASE}/users/id/${encodeURIComponent(userId)}/rename`;
+      // endpoint to update profile picture (you'll implement this on the server)
+      const SET_IMAGE_BY_ID_URL = userId => `${BASE}/users/id/${encodeURIComponent(userId)}/image`;
+
+      // map imageIdNum (1–7) to actual file names
+      const IMAGE_ID_TO_FILE = {
+        1: 'bishop.png',
+        2: 'king.png',
+        3: 'knight.png',
+        4: 'pawn.png',
+        5: 'queen.png',
+        6: 'rook.png',
+        7: 'profilePic.png' // default
+      };
+
+      const TIMEOUT_MS = 5000;
+
+      // TEMP: until you hook in real auth/session
+      const DEFAULT_USER_ID = '2cb040d5-cd49-11f0-b8d3-022f637f4249';
+      const DEFAULT_USERNAME = 'bob';
+      const CURRENT_USER_ID = DEFAULT_USER_ID;
+
+      async function fetchWithTimeout(url, options = {}) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+        try {
+          const res = await fetch(url, { signal: controller.signal, ...options });
+          clearTimeout(timeout);
+          const text = await res.text();
+          let json = null;
+          try {
+            json = JSON.parse(text);
+          } catch (e) {
+            // not JSON, leave json as null
+          }
+          return { ok: res.ok, status: res.status, json, raw: text };
+        } catch (err) {
+          clearTimeout(timeout);
+          return { ok: false, error: err.name === 'AbortError' ? 'timeout' : err.message };
+        }
+      }
+
+      async function loadUserAndUpdateUI() {
+        const usernameHeader = document.getElementById('username-display');
+        const usernameDetail = document.getElementById('username-detail');
+        const winsSpan = document.getElementById('wins');
+        const lossesSpan = document.getElementById('loses'); // original id="loses"
+        const winRateSpan = document.getElementById('winRate');
+        const profileImage = document.getElementById('profile-image');
+
+        // Prefer lookup by ID; fallback to username
+        let userRes = await fetchWithTimeout(USER_BY_ID_URL(CURRENT_USER_ID));
+        if (!(userRes.ok && userRes.json && userRes.json.ok && userRes.json.user)) {
+          userRes = await fetchWithTimeout(USER_BY_NAME_URL(DEFAULT_USERNAME));
+        }
+        if (!(userRes.ok && userRes.json && userRes.json.ok && userRes.json.user)) {
+          console.error('Failed to load user:', userRes);
+          return;
+        }
+
+        const user = userRes.json.user;
+        const username = user.username || 'unknown';
+        const wins = Number(user.winNum || 0);
+        const losses = Number(user.lossNum || 0);
+
+        // Update username in both places
+        if (usernameHeader) usernameHeader.textContent = username;
+        if (usernameDetail) usernameDetail.textContent = username;
+
+        // Update wins + losses
+        if (winsSpan) winsSpan.textContent = wins;
+        if (lossesSpan) lossesSpan.textContent = losses;
+
+        // Compute win rate
+        const totalGames = wins + losses;
+        let winRateText = 'N/A';
+        if (totalGames > 0) {
+          const rate = (wins / totalGames) * 100;
+          winRateText = rate.toFixed(1) + '%';
+        }
+        if (winRateSpan) winRateSpan.textContent = winRateText;
+        // Update profile picture based on imageIdNum from the user
+        if (profileImage && user.hasOwnProperty('imageIdNum')) {
+          const imageId = parseInt(user.imageIdNum, 10) || 7; // default to 7 if invalid
+          const fileName = IMAGE_ID_TO_FILE[imageId] || IMAGE_ID_TO_FILE[7];
+          profileImage.src = `../assets/profile-pictures/${fileName}`;
+        }
+      }
+
+      async function handleChangeUsernameClick() {
+        const button = document.getElementById('change-username-btn');
+        if (!button) return;
+
+        const newUsernameRaw = prompt('Enter a new username:');
+        if (newUsernameRaw === null) {
+          // User hit Cancel
+          return;
+        }
+
+        const newUsername = newUsernameRaw.trim();
+        if (!newUsername) {
+          alert('Username cannot be empty.');
+          return;
+        }
+
+        // basic length check
+        if (newUsername.length > 32) {
+          alert('Username is too long (max 32 characters).');
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = 'Changing...';
+
+        try {
+          const renameRes = await fetchWithTimeout(RENAME_BY_ID_URL(CURRENT_USER_ID), {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({ newUsername })
+          });
+
+          if (renameRes.ok && renameRes.json && renameRes.json.ok) {
+            alert('Username updated successfully!');
+            // Re-fetch user info to refresh UI
+            await loadUserAndUpdateUI();
+          } else {
+            const msg =
+              (renameRes.json && (renameRes.json.error || renameRes.json.message)) ||
+              renameRes.error ||
+              'Unknown error occurred.';
+            alert('Failed to update username: ' + msg);
+            console.error('Rename error:', renameRes);
+          }
+        } catch (err) {
+          console.error('Rename exception:', err);
+          alert('An error occurred while updating username.');
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Change Username';
+        }
+      }
+      async function handleChangeProfilePictureClick() {
+        const button = document.getElementById('change-pfp-btn');
+        if (!button) return;
+
+        const choiceRaw = prompt(
+          'Choose a profile picture (enter a number 1-7):\n' +
+          '1: Bishop\n' +
+          '2: King\n' +
+          '3: Knight\n' +
+          '4: Pawn\n' +
+          '5: Queen\n' +
+          '6: Rook\n' +
+          '7: Default'
+      );
+
+      if (choiceRaw === null) {
+      // User hit Cancel
+      return;
+      }
+
+      const trimmed = choiceRaw.trim();
+      const choice = parseInt(trimmed, 10);
+
+      if (!Number.isInteger(choice) || choice < 1 || choice > 7) {
+        alert('Invalid choice. Please enter a number between 1 and 7.');
+        return;
+      }
+
+      button.disabled = true;
+      const originalText = button.textContent;
+      button.textContent = 'Changing...';
+
+      const payload = { imageIdNum: choice };
+      console.log('Sending image payload:', payload);
+
+      try {
+        const res = await fetchWithTimeout(SET_IMAGE_BY_ID_URL(CURRENT_USER_ID), {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok && res.json && res.json.ok) {
+          alert('Profile picture updated successfully!');
+          await loadUserAndUpdateUI();
+        } else {
+          const msg =
+          (res.json && (res.json.error || res.json.message)) ||
+            res.error ||
+              'Unknown error occurred.';
+          alert('Failed to update profile picture: ' + msg);
+          console.error('Profile picture update error:', res);
+        }
+      } catch (err) {
+        console.error('Profile picture update exception:', err);
+        alert('An error occurred while updating profile picture.');
+      } finally {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    }
+
+
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Initial load
+        await loadUserAndUpdateUI();
+
+        // Wire up Change Username button
+        const changeBtn = document.getElementById('change-username-btn');
+        if (changeBtn) {
+          changeBtn.addEventListener('click', handleChangeUsernameClick);
+        }
+        const changePfpBtn = document.getElementById('change-pfp-btn');
+        if (changePfpBtn) {
+          changePfpBtn.addEventListener('click', handleChangeProfilePictureClick);
+        }
+      });
+    </script>
+  </body>
 </html>
