@@ -1,4 +1,4 @@
-const INSTANCE_IP = '3.237.184.159';
+const INSTANCE_IP = '107.23.150.169';
 const BASE = `http://${INSTANCE_IP}:3000`;
 
 const USER_BY_NAME_URL = (username) =>
@@ -79,3 +79,4 @@ form.addEventListener("submit", async (event) => {
         if (errorBox) errorBox.textContent = "Unable to reach server. Is it running?";
     }
 });
+
