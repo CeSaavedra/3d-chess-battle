@@ -113,3 +113,53 @@ span {
   padding: 20px;
   margin: 0 auto;
 }
+
+/* Multiplayer invite UI */
+#mp-invite-container {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+#mp-invite-container .mp-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+#mp-invite-container input {
+  padding: 8px;
+  width: 220px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: inherit;
+}
+
+#mp-invite-container button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #6b5dd6;
+  color: #fff;
+  cursor: pointer;
+}
+
+#mp-invite-container button:hover {
+  filter: brightness(1.05);
+}
+
+#mp-invite-container #codeDisplay {
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+#mp-invite-container #status {
+  margin-top: 6px;
+  color: #ddd;
+  font-size: 0.95rem;
+}
