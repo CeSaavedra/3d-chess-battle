@@ -61,7 +61,7 @@
     const USER_BY_NAME_URL = username => `${BASE}/users/${encodeURIComponent(username)}`;
     const USER_BY_ID_URL = userId => `${BASE}/users/id/${encodeURIComponent(userId)}`;
     const RENAME_BY_ID_URL = userId => `${BASE}/users/id/${encodeURIComponent(userId)}/rename`;
-    // endpoint to update profile picture (you'll implement this on the server)
+    // endpoint to update profile picture
     const SET_IMAGE_BY_ID_URL = userId => `${BASE}/users/id/${encodeURIComponent(userId)}/image`;
     // map imageIdNum (1–7) to actual filenames
     const IMAGE_ID_TO_FILE = {
