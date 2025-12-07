@@ -77,7 +77,8 @@
     // TEMP: until you hook in real auth/session
     const DEFAULT_USER_ID = '2cb040d5-cd49-11f0-b8d3-022f637f4249';
     const DEFAULT_USERNAME = 'bob';
-    const CURRENT_USER_ID = DEFAULT_USER_ID;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const CURRENT_USER_ID = user.userId;
 
     async function fetchWithTimeout(url, options = {}) {
       const controller = new AbortController();
