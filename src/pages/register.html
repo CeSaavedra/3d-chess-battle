@@ -2,22 +2,42 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Login Page</title>
+        <title>Registration Page</title>
+        
         <link rel="stylesheet" href="../css/register.css">
-        <!-- <script type="module" src="../js/register.js"></script> -->
+
+        <script type="module" src="../js/register.js" defer></script>
     </head>
     <body>
         <div id="content-container">
             <div id="navbar-container">
-
+                <h2>Chess Game</h2>
             </div>
+
             <div id="main-container">
                 <div id="prompt-container">
+                    <h3>Register</h3>
 
+                    <form id="register-form" method="POST">
+                        <label for="username">Username:</label><br>
+                        <input type="text" id="username" name="username" required><br><br>
+
+                        <label for="password">Password:</label><br>
+                        <input type="password" id="password" name="password" required><br><br>
+
+                        <button type="submit">Sign Up</button>
+
+                        <div id="register-link">
+                            <span>Already Have An Account?</span>
+                            <button type="button" onclick="window.location.href='../../index.html'">
+                                Log In
+                            </button>
+                        </div>
+
+                        <p id="register-error" class="error-message"></p>
+                    </form>
                 </div>
             </div>
         </div>
-
-
     </body>
 </html>
