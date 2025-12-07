@@ -23,8 +23,7 @@ const errorBox = document.getElementById("login-error");
 
         const user = JSON.parse(userJson);
         if (user && user.userId) {
-
-            window.location.href = "account.html"; // placeholderName updated if needed
+            window.location.href = "src/pages/game-page.html";
         }
     } catch (e) {
         console.warn("Error reading saved user:", e);
@@ -71,10 +70,12 @@ form.addEventListener("submit", async (event) => {
         // Save info
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        // Send to account/profile page
-        window.location.href = "account.html"; // placeholder name updated if needed
+        // Send to gamepage
+        window.location.href = "src/pages/game-page.html";
     } catch (err) {
         console.error(err);
         if (errorBox) errorBox.textContent = "Unable to reach server. Is it running?";
     }
 });
+
+
