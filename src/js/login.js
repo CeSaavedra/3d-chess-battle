@@ -24,7 +24,7 @@ const errorBox = document.getElementById("login-error");
         const user = JSON.parse(userJson);
         if (user && user.userId) {
 
-            window.location.href = "account.html"; // placeholder
+            window.location.href = "account.html"; // placeholderName updated if needed
         }
     } catch (e) {
         console.warn("Error reading saved user:", e);
@@ -36,10 +36,10 @@ form.addEventListener("submit", async (event) => {
     if (errorBox) errorBox.textContent = "";
 
     const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password"); // placeholder
+    const passwordInput = document.getElementById("password"); 
 
     const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim(); // placeholder
+    const password = passwordInput.value.trim(); 
 
     if (!username) {
         if (errorBox) errorBox.textContent = "Please enter a username.";
@@ -72,11 +72,9 @@ form.addEventListener("submit", async (event) => {
         localStorage.setItem("user", JSON.stringify(data.user));
 
         // Send to account/profile page
-        window.location.href = "account.html"; // placeholder
-
+        window.location.href = "account.html"; // placeholder name updated if needed
     } catch (err) {
         console.error(err);
         if (errorBox) errorBox.textContent = "Unable to reach server. Is it running?";
     }
 });
-
