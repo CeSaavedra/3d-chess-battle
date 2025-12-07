@@ -15,6 +15,7 @@
   <div id="content-container">
     <div id="navbar-container">
       <h1>♟</h1>
+      <button id="logout-btn" style="margin-left: auto;">Logout</button>
     </div>
 
     <div id="main-container">
@@ -228,6 +229,15 @@
       const changePfpBtn = document.getElementById('change-pfp-btn');
       if (changePfpBtn) { changePfpBtn.addEventListener('click', handleChangeProfilePictureClick); }
     });
+
+    const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem("user"); // Clears stored login
+        window.location.href = "../../index.html";
+    });
+}
+
   </script>
 
   <!-- Multiplayer Logic -->
