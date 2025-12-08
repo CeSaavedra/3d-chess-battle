@@ -15,6 +15,7 @@
   <div id="content-container">
     <div id="navbar-container">
       <h1>♟</h1>
+      <button id="logout-btn" style="margin-left: auto;">Logout</button>
     </div>
 
     <div id="main-container">
@@ -55,7 +56,7 @@
   </div>
 
   <script>
-    const INSTANCE_IP = '107.23.150.169';
+    const INSTANCE_IP = '3.226.47.91';
     const BASE = `http://${INSTANCE_IP}:3000`;
     const DB_HEALTH_URL = `${BASE}/db-health`;
     const USER_BY_NAME_URL = username => `${BASE}/users/${encodeURIComponent(username)}`;
@@ -228,6 +229,15 @@
       const changePfpBtn = document.getElementById('change-pfp-btn');
       if (changePfpBtn) { changePfpBtn.addEventListener('click', handleChangeProfilePictureClick); }
     });
+
+    const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem("user"); // Clears stored login
+        window.location.href = "../../index.html";
+    });
+}
+
   </script>
 
   <!-- Multiplayer Logic -->
