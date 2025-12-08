@@ -25,7 +25,7 @@ The Project we are creating is a web-based 3D Chess game with player versus play
 - Implement CSS stylesheets for all pages
 - Functional multiplayer 3d chess environment
 
-## How to Test/Run
+## How to Test/Run(Use cesar Branch)
 
 Run these commands in the VS Code terminal from the project root (MacOS used):
 bash
