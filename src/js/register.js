@@ -1,7 +1,7 @@
 const INSTANCE_IP = '107.23.150.169';
 const BASE = `http://${INSTANCE_IP}:3000`;
 
-const REGISTER_BY_NAME_URL = (username) =>
+const REGISTER_BY_NAME_URL = (username, password) =>
     `${BASE}/users/${encodeURIComponent(register)}`;
 
 
@@ -64,5 +64,6 @@ form.addEventListener("submit", async (event) => {
         if (errorBox) errorBox.textContent = "Unable to reach server. Is it running?";
     }
 });
+
 
 
