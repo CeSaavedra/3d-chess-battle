@@ -1,9 +1,7 @@
 const INSTANCE_IP = '3.226.47.91';
 const BASE = `http://${INSTANCE_IP}:3000`;
 
-const REGISTER_BY_NAME_URL = (username, password) =>
-    `${BASE}/users/${encodeURIComponent(register)}`;
-
+const REGISTER_URL = ${BASE}/users/register;
 
 const form = document.getElementById("register-form");
 const errorBox = document.getElementById("register-error");
@@ -35,8 +33,12 @@ form.addEventListener("submit", async (event) => {
     const password = passwordInput.value.trim(); 
 
     try {
-        const res = await fetch(REGISTER_BY_NAME_URL(username, password));
-
+		const res = await fetch(REGISTER_URL, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ username, password }),
+		});
+		
         if (!res.ok) {
             if (res.status === 409) {
                 if (errorBox) errorBox.textContent = "That Username is taken.  Please choose another.";
@@ -64,6 +66,7 @@ form.addEventListener("submit", async (event) => {
         if (errorBox) errorBox.textContent = "Unable to reach server. Is it running?";
     }
 });
+
 
 
 
