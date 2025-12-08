@@ -1,0 +1,8 @@
+{
+  "name": "3d-chess-battle",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "echo 'no-op'"
+  }
+}

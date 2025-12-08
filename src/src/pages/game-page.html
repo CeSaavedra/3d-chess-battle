@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Chess Battle</title>
+  <link rel="icon" href="../assets/icons/chess-icon.png" sizes="32x32" type="image/png" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/game.js"></script>
+  <script type="module" src="../js/game.js"></script>
+  <link rel="stylesheet" href="../css/game-page.css">
+</head>
+
+<body>
+  <!-- overlay spans entire screen; top-row uses percentages for sizing -->
+  <div class="overlay" aria-hidden="false">
+    <div class="top-row">
+      <!-- make the HUD keyboard-focusable and announce it as a button-like control -->
+      <div id="gameHUD" role="button" aria-pressed="false" tabindex="0" aria-label="Game HUD, click to open details">
+        <p id="tileSelected"> </p>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <p id="tileTargeted"> </p>
+        <p id="lobbyIndicator" style="display:none">Waiting on Opponent</p>
+        <p id="opponentsTurn" style="display:none">Opponent's Turn</p>
+        <p id="winIndicator" style="display:none">Winner!</p>
+        <p id="lossIndicator" style="display:none">You Lost!</p>
+      </div>
+
+      <div id="forfeitContainer" title="Forfeit">
+        <i class="fa fa-close" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

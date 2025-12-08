@@ -1,0 +1,170 @@
+/* Luke Pressimone - 3D Chess Profile Template Styles */
+/* Login.css Matching Theme */
+
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: radial-gradient(circle at center, #1c1c1c 0%, #0f0f0f 100%);
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+/* Navbar */
+#navbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 70px;
+  background-color: #222222;
+  border-bottom: 2px solid #ffd24b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  padding: 0 24px;
+}
+
+#navbar-container h2 {
+  font-size: 1.5rem;
+  color: #ffd24b;
+  letter-spacing: 1px;
+}
+
+/* Main content stacked under navbar */
+#content-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 100px 24px 40px;
+}
+
+/* Main profile card */
+#main-container {
+  width: 100%;
+  max-width: 820px;
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  margin: 0 auto;
+  padding: 2.5rem 3rem;
+  text-align: center;
+}
+
+/* Profile image */
+img[alt="Profile Picture"] {
+  display: block;
+  margin: 20px auto;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #ffd24b;
+}
+
+img:hover {
+  transform: scale(1.03);
+  filter: brightness(1.05);
+}
+
+/* Section Labels */
+h1, h2, h3 {
+  color: #ffd24b;
+  margin-bottom: 10px;
+}
+
+/* Stats list */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 15px 0;
+  border-radius: 12px;
+  background-color: rgba(45, 45, 45, 0.9);
+  border: 2px solid #ffd24b;
+  width: 100%;
+}
+
+li {
+  padding: 12px;
+  border-bottom: 1px solid #333;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+span {
+  font-weight: bold;
+  color: #ffd24b;
+}
+
+/* Buttons */
+button {
+  background-color: #ffd24b;
+  color: #000;
+  border: none;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 0.6rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  background-color: #e6c870;
+  transform: scale(1.02);
+}
+
+/* Inputs */
+input {
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: #fff;
+  width: 100%;
+}
+
+input:focus {
+  border-color: #ffd24b;
+  outline: none;
+}
+
+/* Multiplayer invite section */
+#mp-invite-container {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+#mp-invite-container .mp-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+#mp-invite-container #codeDisplay {
+  font-weight: 600;
+  color: #ffd24b;
+}
+
+#mp-invite-container #status {
+  margin-top: 6px;
+  color: #ccc;
+  font-size: 0.95rem;
+}

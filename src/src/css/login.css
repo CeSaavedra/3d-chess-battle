@@ -1,0 +1,124 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Page Background */
+body {
+  height: 100vh;
+  background: radial-gradient(circle at center, #1c1c1c 0%, #0f0f0f 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layout */
+#content-container {
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+/*Navbar*/
+#navbar-container {
+  background-color: #222222;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  border-bottom: 2px solid #ffd24b;
+}
+
+#navbar-container h2 {
+  font-size: 1.5rem;
+  color: #ffd24b;
+  letter-spacing: 1px;
+}
+
+/*Main */
+#main-container {
+  padding: 2rem 2.5rem;
+  text-align: center;
+}
+
+#prompt-container h3 {
+  margin-bottom: 1.5rem;
+  color: #ffd24b;
+  font-size: 1.3rem;
+}
+
+/* Form */
+#login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+#login-form label {
+  text-align: left;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+#login-form input {
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background-color: #222;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+#login-form input:focus {
+  border-color: #fccf47;
+  outline: none;
+}
+
+/*button*/
+#login-form button {
+  background-color: #ffd24b;
+  color: #000;
+  border: none;
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 1rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#login-form button:hover {
+  background-color: #e6c870;
+  transform: scale(1.02);
+}
+
+#register-link {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #ccc;
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+#register-link button {
+  background: none;
+  border: none;
+  color: #ffd24b;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+#register-link button:hover {
+  color: #e6c870;
+}
