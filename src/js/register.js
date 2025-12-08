@@ -1,4 +1,4 @@
-const INSTANCE_IP = '3.226.47.91';
+const INSTANCE_IP = '100.31.30.28';
 const BASE = `http://${INSTANCE_IP}:3000`;
 
 const REGISTER_URL = '${BASE}/users/register';
