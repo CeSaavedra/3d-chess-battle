@@ -25,4 +25,4 @@ The Project we are creating is a web-based 3D Chess game with player versus play
 - Implement CSS stylesheets for all pages
 - Functional multiplayer 3d chess environment
 
-## How to Test/Run(Use cesar Branch README.md)
+## How to Test/Run - Use cesar Branch and follow README.md there
