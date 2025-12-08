@@ -14,7 +14,7 @@ The Project we are creating is a web-based 3D Chess game with player versus play
 
 ## How to Test/Run
 
-Run these commands in the VS Code terminal from the project root:
+Run these commands in the VS Code terminal from the project root (MacOS used):
 
 ```bash
 # 1. Install Express and Socket.IO (if not already)
@@ -34,6 +34,22 @@ ln -sfn ../src/pages public/pages
 node src/js/server.js
 
 ```
+IF you are using WINDOWS OS - Run these commands INSTEAD 
+May need to grant admin privilege
+
+```bash
+npm install express socket.io
+mkdir public
+copy index.html public\
+
+mklink /D public\css ..\src\css
+mklink /D public\js ..\src\js
+mklink /D public\assets ..\src\assets
+mklink /D public\pages ..\src\pages
+
+node src/js/server.js
+```
+
 
 Open in your browser:
 
