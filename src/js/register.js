@@ -1,7 +1,7 @@
 const INSTANCE_IP = '3.226.47.91';
 const BASE = `http://${INSTANCE_IP}:3000`;
 
-const REGISTER_URL = ${BASE}/users/register;
+const REGISTER_URL = '${BASE}/users/register';
 
 const form = document.getElementById("register-form");
 const errorBox = document.getElementById("register-error");
@@ -66,6 +66,7 @@ form.addEventListener("submit", async (event) => {
         if (errorBox) errorBox.textContent = "Unable to reach server. Is it running?";
     }
 });
+
 
 
 
