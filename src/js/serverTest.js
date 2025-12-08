@@ -1,4 +1,4 @@
-const INSTANCE_IP = '3.237.184.159';
+const INSTANCE_IP = '3.226.47.91';
 const BASE = `http://${INSTANCE_IP}:3000`;
 const DB_HEALTH_URL = `${BASE}/db-health`;
 const USER_BY_NAME_URL = username => `${BASE}/users/${encodeURIComponent(username)}`;
